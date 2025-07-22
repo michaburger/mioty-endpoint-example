@@ -1,6 +1,13 @@
+# License Information
+
+This project uses a dual-license structure to accommodate different components:
+
+## Your Original Code (MIT License)
+
 MIT License
 
-Copyright (c) 2025 Micha Burger
+Copyright (c) 2025 mioty Alliance e.V.  
+Contact: Micha Burger <micha.burger@mioty-alliance.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,3 +26,42 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+## Third-Party Components
+
+### TS-UNB-Lib (Fraunhofer License)
+The Fraunhofer TS-UNB-Lib located in `lib/ts-unb-lib-rfm69/` is licensed under 
+the Fraunhofer TS-UNB-Lib License. See `lib/ts-unb-lib-rfm69/LICENSE.md` for 
+complete terms.
+
+**IMPORTANT LICENSING RESTRICTIONS:**
+- Academic and non-commercial use only
+- Source code availability requirements  
+- Patent licensing may be required for commercial use
+- See: https://www.sisvel.com/licensing-programs/wireless-communications/mioty/license-terms
+
+### Raspberry Pi Pico SDK
+This project uses the Raspberry Pi Pico SDK, which is licensed under the BSD 3-Clause License.
+See: https://github.com/raspberrypi/pico-sdk/blob/master/LICENSE.TXT
+
+## Combined Work Licensing
+Due to the inclusion of the Fraunhofer TS-UNB-Lib, the combined work is subject 
+to the most restrictive license terms, which include:
+- **Academic and non-commercial use only**
+- **Source code availability requirements**
+- **Attribution requirements as specified in the TS-UNB-Lib license**
+- **Patent licensing required for commercial MIOTY implementations**
+
+## File-Specific Licensing
+- Files in `lib/ts-unb-lib-rfm69/`: Fraunhofer TS-UNB-Lib License
+- All other project files: MIT License (mioty Alliance e.V.)
+
+## Contact Information
+For licensing questions regarding the mioty Alliance components:
+- mioty Alliance e.V.
+- Contact: Micha Burger
+- Email: micha.burger@mioty-alliance.com
+
+For questions regarding the TS-UNB-Lib:
+- Fraunhofer Institute for Integrated Circuits IIS
+- Email: ks-contracts@iis.fraunhofer.de
