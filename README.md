@@ -8,11 +8,11 @@ mioty (short for "massive-IoT" and also "my-IoT") is a revolutionary Low Power W
 
 - **Long Range**: Up to 15km in rural areas, 3-5km in cities
 - **Ultra Low Power**: Devices can run for years on a single battery  
-- **Massive Capacity**: Supports 1 million+ devices per base station
+- **Massive Capacity**: Supports 1 million+ daily telegrams per base station
 - **Robust Communication**: Works reliably even in challenging RF environments
-- **Cost Effective**: No subscription fees, deploy your own private network
+- **Cost Effective**: Less base stations needed to deploy your own network
 
-Unlike other LPWAN technologies, mioty uses a unique telegram splitting approach that makes it extremely robust against interference and allows for truly massive device deployments. The "my-IoT" aspect means you can build completely private networks without depending on external infrastructure.
+Unlike other LPWAN technologies, mioty uses a unique telegram splitting approach that makes it extremely robust against interference and allows for truly massive device deployments. 
 
 ## 🤝 About the mioty Alliance
 
@@ -22,10 +22,10 @@ The Alliance provides an open, standardized, and interoperable ecosystem across 
 
 ## 🎯 The mioty Generic Node Concept
 
-This project provides a **low-cost, open-source starting point** for your mioty IoT projects. Built around affordable hardware costing approximately **$10**, it combines:
+This project provides a **low-cost, open-source starting point** for your mioty IoT projects. Built around affordable hardware for less than **$10**, it combines:
 
-- **Raspberry Pi Pico** (~$4) - Powerful RP2040 microcontroller
-- **HopeRF RFM69HW** (~$6) - 868MHz radio module for mioty communication
+- **Raspberry Pi Pico** (~$3) - Powerful RP2040 microcontroller
+- **HopeRF RFM69HW** (~$2) - 868MHz radio module for mioty communication
 - **Open Source TS-UNB Library** from Fraunhofer - Free for maker projects
 
 ⚠️ **Important Note**: This open-source project is designed for **maker and educational purposes**. While it uses Fraunhofer's open-source TS-UNB library, production-grade applications should consider the commercial libraries available from Fraunhofer and Stackforce, which offer enhanced features, support, and quality assurance.
@@ -34,7 +34,8 @@ This project provides a **low-cost, open-source starting point** for your mioty 
 
 This framework is designed as a **modular foundation** that can grow with your project needs:
 
-- **Core Board**: Pico + RFM69HW can be stacked with a custom breakout board
+- **Core Board**: Raspberry Pi Pico off-the-shelf
+- **RF Board**: Include the RFM69HW module or any other module if you want to port the TS-UNB library
 - **Sensor Boards**: Add temperature, humidity, pressure, light sensors
 - **GPS Board**: For location tracking applications  
 - **Power Board**: Solar charging, battery management
@@ -50,7 +51,6 @@ The software architecture supports this modularity, making it easy to add new se
 - **📊 Smart Payloads**: Efficient binary data transmission
 - **🌡️ Sensor Ready**: Built-in temperature sensor with easy expansion
 - **🔧 Beginner Friendly**: Clear structure and comprehensive documentation
-- **⚡ Low Power**: Optimized for battery-powered applications
 
 ## 📁 What's Inside
 
@@ -94,7 +94,7 @@ This structure is designed to grow with your project - adding new sensors or fea
 
 - Basic soldering kit for permanent connections
 - Multimeter for troubleshooting
-- mioty base station or gateway for testing
+- mioty base station for testing, for example [miotyGO](https://github.com/loriot/miotyGO/tree/master)
 
 ### Hardware Connections
 
@@ -402,7 +402,7 @@ We provide examples and templates to help you add common sensors like:
 
 ### Power Management
 
-The system is designed for battery operation:
+Even though the RP2040 is not the most low-power chip on the market, it can be optimized for battery operation:
 
 - **Sleep modes** between transmissions to save power
 - **Efficient transmission** protocols to minimize radio usage
