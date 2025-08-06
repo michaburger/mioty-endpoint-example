@@ -147,6 +147,27 @@ bool Application::initialize() {
         return false;
     }
     
+    // Initialize power bank keep-alive if enabled
+    if (Config::POWER_FROM_POWERBANK) {
+        uint8_t led_gpio = Config::PowerBankKeepAlive::ENABLE_LOAD_LED_INDICATOR ? 
+                          Board::LED_PIN : UINT8_MAX;
+        
+        if (!m_powerbank_keepalive.initialize(
+            Board::GPIO::POWERBANK_LOAD_PIN,
+            led_gpio,
+            Config::PowerBankKeepAlive::PULSE_INTERVAL_MS,
+            Config::PowerBankKeepAlive::PULSE_DURATION_MS,
+            Config::PowerBankKeepAlive::USE_EXTERNAL_RESISTOR)) {
+            Logger::error("Power bank keep-alive initialization failed");
+            return false;
+        }
+        
+        Logger::info("Power bank keep-alive enabled - GPIO: %d, Interval: %dms, External resistor: %s", 
+                     Board::GPIO::POWERBANK_LOAD_PIN,
+                     Config::PowerBankKeepAlive::PULSE_INTERVAL_MS,
+                     Config::PowerBankKeepAlive::USE_EXTERNAL_RESISTOR ? "Yes" : "No");
+    }
+    
     // Initialize and log payload configuration
     Logger::info("Payload system initialized - Expected payload size: %u bytes", 
                  (unsigned)PayloadConfig::Utils::calculateExpectedPayloadSize());
@@ -191,6 +212,11 @@ void Application::run() {
         
         // Update board status (LED, etc.)
         updateBoardStatus();
+        
+        // Update power bank keep-alive if enabled
+        if (Config::POWER_FROM_POWERBANK) {
+            m_powerbank_keepalive.update();
+        }
         
         // Log periodic status
         if (++loop_counter % 60 == 0) { // Every 60 seconds with 1s loop

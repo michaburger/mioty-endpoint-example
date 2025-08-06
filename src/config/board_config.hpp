@@ -39,6 +39,9 @@ namespace Board {
         // I2C1 interface
         constexpr uint I2C1_SDA = 6;  // GP6
         constexpr uint I2C1_SCL = 7;  // GP7
+        
+        // Power bank keep-alive GPIO
+        constexpr uint POWERBANK_LOAD_PIN = 15;  // GP15 for dummy load
     }
     
     // Communication interfaces

@@ -83,4 +83,34 @@ namespace Config {
     // Power management
     constexpr bool ENABLE_SLEEP_MODE = false;
     constexpr uint32_t SLEEP_DURATION_MS = 30000;
+    
+    // Power bank compatibility feature
+    // Enables a periodic dummy load to prevent USB power banks from auto-shutoff
+    // due to low current draw (typically <60-100mA triggers shutoff)
+    constexpr bool POWER_FROM_POWERBANK = true;
+    
+    // Dummy load configuration (when POWER_FROM_POWERBANK is true)
+    namespace PowerBankKeepAlive {
+        // Pulse load timing
+        constexpr uint32_t PULSE_INTERVAL_MS = 5000;      // Pulse every 5 seconds
+        constexpr uint32_t PULSE_DURATION_MS = 150;       // Pulse for 150ms
+        
+        // Load current configuration
+        constexpr bool USE_EXTERNAL_RESISTOR = true;       // Use external resistor for higher current
+        
+        // Hardware connection options:
+        // 1. USE_EXTERNAL_RESISTOR = true:
+        //    Connect GPIO pin (Board::GPIO::POWERBANK_LOAD_PIN) through a resistor to GND
+        //    For ~33mA at 3.3V: R = 3.3V / 0.033A = 100Ω (safe within 50mA GPIO limit)
+        //    Use a 100Ω, 0.25W resistor for optimal safety
+        //    Power dissipation during pulse: P = 3.3V * 0.033A = 0.109W
+        //
+        // 2. USE_EXTERNAL_RESISTOR = false:
+        //    Use only GPIO pin drive current (~20-25mA at 12mA drive strength)
+        //    Less effective but no external components required
+        //    May not be sufficient for all power banks
+        
+        // LED indicator for dummy load activity (uses board LED)
+        constexpr bool ENABLE_LOAD_LED_INDICATOR = false;
+    }
 }

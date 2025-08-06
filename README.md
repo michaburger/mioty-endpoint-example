@@ -110,6 +110,14 @@ Connect your RFM69HW module to the Raspberry Pi Pico following this simple wirin
 | GND | GND | Black | Ground |
 | 3.3V | 3V3 | Red | Power |
 
+**Optional: Power Bank Keep-Alive (for USB power bank compatibility):**
+
+| Component | Pico GPIO | Purpose |
+|-----------|-----------|---------|
+| 100Ω Resistor to GND | GP15 | Dummy load for power banks |
+
+💡 **Power Bank Tip**: If powering from a USB power bank, connect a 100Ω, 0.25W resistor between GP15 and GND. This prevents the power bank from auto-shutting off due to low current draw. See `docs/POWERBANK_KEEPALIVE.md` for details.
+
 💡 **Beginner Tip**: Use a breadboard for your first setup. Once everything works, you can create a more permanent solution with a custom PCB or perfboard.
 
 ### Software Setup

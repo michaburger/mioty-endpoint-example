@@ -91,6 +91,7 @@ Modifications by mioty Alliance e.V. (2025)
 #include "../../drivers/mioty/ts_unb_driver.hpp"
 #include "../../drivers/sensors/temperature/rp2040_temp_sensor.hpp"
 #include "../../lib/utils/logger.hpp"
+#include "../../lib/utils/powerbank_keepalive.hpp"
 
 /**
  * @brief Sensor data structure
@@ -129,6 +130,7 @@ private:
     TSUNBDriver m_ts_unb_driver;
     RP2040TempSensor m_temperature_sensor;
     PayloadConfig::PayloadBuilder m_payload_builder;
+    PowerBankKeepAlive::KeepAliveManager m_powerbank_keepalive;
     
     // Timing
     uint32_t m_last_sensor_reading_time;
