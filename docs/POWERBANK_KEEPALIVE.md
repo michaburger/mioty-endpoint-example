@@ -2,7 +2,7 @@
 
 ## Overview
 
-The mioty Generic Node firmware includes a configurable power bank keep-alive feature to prevent USB power banks from automatically shutting off due to low current consumption.
+The mioty End-Point Example firmware includes a configurable power bank keep-alive feature to prevent USB power banks from automatically shutting off due to low current consumption.
 
 Many USB power banks (including the Voltcraft PB-19C-M) have an auto-shutoff feature that turns off the output when the connected device draws less than ~60-100mA for an extended period. This feature is designed to save power but can be problematic for low-power IoT devices.
 

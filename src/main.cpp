@@ -75,7 +75,7 @@ Modifications by mioty Alliance e.V. (2025)
 
 /**
  * @file main.cpp
- * @brief Main application entry point for Mioty Generic Node Framework with TS-UNB integration
+ * @brief Main application entry point for Mioty End-Point Example with TS-UNB integration
  * 
  * Copyright (c) 2025 mioty Alliance e.V.
  * Author: Micha Burger <micha.burger@mioty-alliance.com>

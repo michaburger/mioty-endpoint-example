@@ -38,26 +38,6 @@ This project is designed as a **comprehensive example** that demonstrates mioty 
 
 ⚠️ **Important Note**: This open-source project is designed for **learning, experimentation, and getting started with mioty**. The modular architecture allows easy migration to production-grade components - replace the RP2040 with industrial microcontrollers, swap in commercial TS-UNB libraries from Fraunhofer or Stackforce, or use different radio modules as needed.
 
-## 🔧 Modular Architecture Showcase
-
-This example demonstrates **flexible, replaceable components** while maintaining educational clarity:
-
-**Core Design Principles:**
-- **Component Modularity**: Every major component can be replaced without redesigning the system
-- **Clean Interfaces**: Well-defined boundaries between hardware, protocol, and application layers
-- **Extensible Framework**: Easy addition of new sensors and features
-- **Configuration Management**: Centralized settings for different deployment scenarios
-- **Educational Clarity**: Clear separation of concerns for easy understanding
-
-**Replaceable Hardware Foundation:**
-- **Microcontroller**: RP2040 can be replaced with any microcontroller (ESP32, STM32, Nordic, etc.)
-- **Radio Module**: RFM69HW demonstrates the concept - any mioty-compatible radio works
-- **TS-UNB Library**: Open-source version can be swapped with commercial libraries (Stackforce, Fraunhofer)
-- **Sensor Integration**: Standard I2C, SPI, and analog interfaces support any sensor type
-- **Expansion Ready**: Modular design supports additional hardware easily
-
-The architecture showcases how to build mioty end-points with interchangeable components, making it easy to transition from learning prototype to specialized implementations.
-
 ## 🚀 Key Features & Concepts Demonstrated
 
 - **📋 Flexible Payload Design**: Example 8-byte header + sensor data format showcasing mioty concepts
@@ -145,13 +125,21 @@ Connect your RFM69HW module to the Raspberry Pi Pico following this simple wirin
 
 💡 **Beginner Tip**: Use a breadboard for your first setup. Once everything works, you can create a more permanent solution with a custom PCB or perfboard.
 
+#### Wiring Diagram
+
+Here's a visual representation of the complete setup:
+
+![mioty End-Point Example Wiring Diagram](docs/wiring-diagram.png)
+
+*The diagram shows the Raspberry Pi Pico connected to the RFM69HW radio module with the antenna, following the pin connections specified in the table above.*
+
 ### Software Setup
 
 1. **Get the code:**
 
 ```bash
 git clone <your-repo-url>
-cd mioty-generic-node-fw
+cd mioty-endpoint-example
 ```
 
 2. **Open in VS Code:**
@@ -282,7 +270,7 @@ This complete blueprint demonstrates how to define payload structures for mioty 
   "version": "1.0",
   "typeEui": "70b3d56770000001",
   "meta": {
-    "name": "mioty Example Node - Temperature Only",
+    "name": "mioty End-Point Example - Temperature Only",
     "vendor": "mioty Alliance",
     "description": "RP2040 + RFM69HW with internal temperature sensor"
   },
@@ -576,7 +564,3 @@ Email: micha.burger@mioty-alliance.com
 ## 🤖 Acknowledgments
 
 This project has been developed with the invaluable assistance of **Claude Sonnet 4**, which helped design the architecture, write documentation, and ensure code quality throughout the development process.
-
----
-
-*Built with ❤️ for the mioty IoT ecosystem*

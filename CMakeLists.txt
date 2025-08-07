@@ -1,4 +1,4 @@
-# Mioty Generic Node Framework - Main CMakeLists.txt
+# Mioty End-Point Example - Main CMakeLists.txt
 
 cmake_minimum_required(VERSION 3.13)
 
@@ -29,7 +29,7 @@ set(PICO_BOARD pico CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(mioty_generic_node C CXX ASM)
+project(mioty_endpoint_example C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
