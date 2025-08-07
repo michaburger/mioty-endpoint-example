@@ -21,7 +21,7 @@ namespace PayloadConfig {
     constexpr uint8_t PAYLOAD_VERSION = 1;
     
     // Maximum payload size for MIOTY transmission
-    constexpr size_t MAX_PAYLOAD_SIZE = 255;
+    constexpr size_t MAX_PAYLOAD_SIZE = 245;
     
     // Trigger types that can cause an uplink transmission
     enum class TriggerType : uint8_t {

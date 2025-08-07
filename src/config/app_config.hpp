@@ -44,7 +44,7 @@ namespace Config {
     // Mioty/TS-UNB settings
     constexpr bool ENABLE_MIOTY = true;
     constexpr uint32_t MIOTY_TRANSMISSION_INTERVAL_MS = 60000; // 60 seconds
-    constexpr uint32_t MIOTY_MAX_PAYLOAD_SIZE = 255;
+    constexpr uint32_t MIOTY_MAX_PAYLOAD_SIZE = 245;
     
     // Mioty/TS-UNB radio configuration
     namespace Mioty {

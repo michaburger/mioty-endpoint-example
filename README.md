@@ -1,4 +1,4 @@
-# mioty Generic Node Framework
+# mioty End-Point Example
 
 ## 🌐 What is mioty?
 
@@ -12,7 +12,7 @@ mioty (short for "massive-IoT" and also "my-IoT") is a revolutionary Low Power W
 - **Robust Communication**: Works reliably even in challenging RF environments
 - **Cost Effective**: Less base stations needed to deploy your own network
 
-Unlike other LPWAN technologies, mioty uses a unique telegram splitting approach that makes it extremely robust against interference and allows for truly massive device deployments. 
+Unlike other LPWAN technologies, mioty uses a unique telegram splitting approach that makes it extremely robust against interference and allows for truly massive device deployments.
 
 ## 🤝 About the mioty Alliance
 
@@ -20,58 +20,83 @@ The **mioty Alliance** is a global ecosystem of technology leaders, hardware man
 
 The Alliance provides an open, standardized, and interoperable ecosystem across the entire IoT value chain - from end-point devices and base stations to IoT platforms and applications. This collaborative approach ensures that mioty technology continues to evolve and remains future-proof for all users.
 
-## 🎯 The mioty Generic Node Concept
+## 🎯 mioty End-Point Example: Modular Architecture Showcase
 
-This project provides a **low-cost, open-source starting point** for your mioty IoT projects. Built around affordable hardware for less than **$10**, it combines:
+This project is designed as a **comprehensive example** that demonstrates mioty technology concepts and modular architecture while remaining accessible to everyone. Built around affordable hardware for less than **$10**, it combines:
 
-- **Raspberry Pi Pico** (~$3) - Powerful RP2040 microcontroller
-- **HopeRF RFM69HW** (~$2) - 868MHz radio module for mioty communication
-- **Open Source TS-UNB Library** from Fraunhofer - Free for maker projects
+- **Raspberry Pi Pico** (~$3) - Easily replaceable with any microcontroller
+- **HopeRF RFM69HW** (~$2) - Modular design allows any mioty radio module
+- **Open Source TS-UNB Library** from Fraunhofer - Can be swapped with commercial libraries
 
-⚠️ **Important Note**: This open-source project is designed for **maker and educational purposes**. While it uses Fraunhofer's open-source TS-UNB library, production-grade applications should consider the commercial libraries available from Fraunhofer and Stackforce, which offer enhanced features, support, and quality assurance.
+**What makes this example special:**
 
-## 🔧 Modular Platform Vision
+- **💡 Modular Design**: Demonstrates how components can be easily replaced and extended
+- **🏗️ Best Practice Patterns**: Shows clean architecture and separation of concerns
+- **📚 Educational Focus**: Every design decision is documented and explained for learning
+- **🔧 Accessible Hardware**: Uses widely available components to keep costs under $10
+- **🚀 End-to-End Demo**: Complete working system demonstrating mioty concepts
 
-This framework is designed as a **modular foundation** that can grow with your project needs:
+⚠️ **Important Note**: This open-source project is designed for **learning, experimentation, and getting started with mioty**. The modular architecture allows easy migration to production-grade components - replace the RP2040 with industrial microcontrollers, swap in commercial TS-UNB libraries from Fraunhofer or Stackforce, or use different radio modules as needed.
 
-- **Core Board**: Raspberry Pi Pico off-the-shelf
-- **RF Board**: Include the RFM69HW module or any other module if you want to port the TS-UNB library
-- **Sensor Boards**: Add temperature, humidity, pressure, light sensors
-- **GPS Board**: For location tracking applications  
-- **Power Board**: Solar charging, battery management
-- **Display Board**: OLED/LCD for local status indication
-- **Custom Boards**: Design your own for specific applications
+## 🔧 Modular Architecture Showcase
 
-The software architecture supports this modularity, making it easy to add new sensors and features without starting from scratch.
+This example demonstrates **flexible, replaceable components** while maintaining educational clarity:
 
-## 🚀 Key Features
+**Core Design Principles:**
+- **Component Modularity**: Every major component can be replaced without redesigning the system
+- **Clean Interfaces**: Well-defined boundaries between hardware, protocol, and application layers
+- **Extensible Framework**: Easy addition of new sensors and features
+- **Configuration Management**: Centralized settings for different deployment scenarios
+- **Educational Clarity**: Clear separation of concerns for easy understanding
 
-- **🏗️ Modular Design**: Ready to expand with additional sensors and hardware
-- **📡 mioty Integration**: Full TS-UNB protocol support with RFM69HW
-- **📊 Smart Payloads**: Efficient binary data transmission
-- **🌡️ Sensor Ready**: Built-in temperature sensor with easy expansion
-- **🔧 Beginner Friendly**: Clear structure and comprehensive documentation
+**Replaceable Hardware Foundation:**
+- **Microcontroller**: RP2040 can be replaced with any microcontroller (ESP32, STM32, Nordic, etc.)
+- **Radio Module**: RFM69HW demonstrates the concept - any mioty-compatible radio works
+- **TS-UNB Library**: Open-source version can be swapped with commercial libraries (Stackforce, Fraunhofer)
+- **Sensor Integration**: Standard I2C, SPI, and analog interfaces support any sensor type
+- **Expansion Ready**: Modular design supports additional hardware easily
 
-## 📁 What's Inside
+The architecture showcases how to build mioty end-points with interchangeable components, making it easy to transition from learning prototype to specialized implementations.
 
-The project is organized to make it easy to understand and extend:
+## 🚀 Key Features & Concepts Demonstrated
 
+- **📋 Flexible Payload Design**: Example 8-byte header + sensor data format showcasing mioty concepts
+- **📑 Complete Blueprint Definition**: Demonstrates proper mioty blueprint creation for base station integration  
+- **🏗️ Modular Architecture**: Clean separation between hardware drivers, application logic, and configuration
+- **📡 mioty Integration Example**: Working TS-UNB protocol implementation with RFM69HW
+- **📊 Efficient Data Transmission**: Binary payload format optimized for power and bandwidth
+- **🌡️ Extensible Sensor Framework**: Template showing how to add any sensor type
+- **🔧 Component Replaceability**: Every major component can be swapped for different hardware
+- **💰 Accessible Learning**: Sub-$10 BOM using widely available components
+
+## 📁 Modular Project Structure
+
+The project demonstrates **flexible, component-based organization** for mioty end-point development:
+
+```text
+mioty-end-point-example/
+├── src/                          # Application layer (easily customizable)
+│   ├── main.cpp                  # Clean entry point and main loop
+│   ├── app/                      # Application business logic
+│   └── config/                   # Centralized configuration management
+├── drivers/                      # Hardware abstraction layer (replaceable)
+│   ├── mioty/                    # mioty protocol implementation
+│   └── sensors/                  # Sensor drivers with unified interface
+├── lib/                          # Core libraries (swappable)
+│   ├── utils/                    # Helper functions and utilities
+│   └── ts-unb-lib-rfm69/         # TS-UNB library (replaceable with commercial)
+└── docs/                         # Comprehensive documentation
 ```
-mioty-generic-node-fw/
-├── src/                          # Your main application
-│   ├── main.cpp                  # Program starts here
-│   ├── app/                      # Main application logic
-│   └── config/                   # All settings in one place
-├── drivers/                      # Hardware drivers
-│   ├── mioty/                    # mioty radio communication
-│   └── sensors/                  # Temperature, humidity, etc.
-├── lib/                          # Core libraries
-│   ├── utils/                    # Helper functions
-│   └── ts-unb-lib-rfm69/         # mioty protocol library
-└── docs/                         # Documentation
-```
 
-This structure is designed to grow with your project - adding new sensors or features is straightforward and won't break existing code.
+**Key Architecture Benefits:**
+
+- **Component Independence**: Each layer can be replaced without affecting others
+- **Easy Experimentation**: Swap hardware or libraries to test different approaches
+- **Learning-Friendly**: Clear structure makes it easy to understand each component's role
+- **Migration Path**: Start with example components, upgrade to specialized ones as needed
+- **Extensible Design**: Add new sensors or features without restructuring
+
+This structure demonstrates how to organize mioty projects for maximum flexibility and component reusability.
 
 ## 🎯 Getting Started
 
@@ -168,20 +193,31 @@ Once your device is running, you can monitor its activity and debug any issues u
 
 🎉 **Success!** Your mioty node should now be running and sending temperature data every 60 seconds.
 
-## 📡 How Data is Sent (mioty Payloads)
+## 📡 mioty Concepts: Payload Design & Blueprint Creation
 
-Instead of sending text messages, this system sends compact binary data to save power and bandwidth. Think of it like sending a postcard instead of a letter - it contains exactly the information needed in the smallest possible space.
+This example demonstrates **key mioty concepts** including payload design and blueprint creation, showing how to build a complete end-to-end mioty system.
 
-### What Gets Sent
+### Binary Protocol Design Concepts
 
-Every transmission contains:
+The system demonstrates a **compact binary protocol** that showcases:
 
-1. **Device Information** (8 bytes): Who sent it, firmware version, why it was sent
-2. **Sensor Data** (variable): Temperature, humidity, or whatever sensors you add
+- **Efficient Data Format**: Short transmissions for better battery life and range
+- **Structured Approach**: Consistent header + sensor data organization  
+- **Extensible Design**: Easy to add new sensors while maintaining compatibility
+- **Blueprint Integration**: Proper definition for base station decoding
 
-### Example: Temperature Reading
+### Complete mioty Data Flow Example
 
-When your device measures 23.45°C, it sends something like this:
+Every transmission demonstrates the full mioty pipeline:
+
+1. **Sensor Reading** → Clean data acquisition with error handling
+2. **Payload Composition** → Binary formatting with proper scaling
+3. **mioty Transmission** → TS-UNB protocol implementation
+4. **Blueprint Decoding** → Base station integration with structured output
+
+### Example: Temperature Data Transmission
+
+When measuring 23.45°C, the system creates a formatted payload:
 
 ```
 01 01 00 01 14 01 00 00 29 09
@@ -189,27 +225,32 @@ When your device measures 23.45°C, it sends something like this:
 
 That's what we call the payload. More details about what this means later.
 
-### Adding More Sensors
+### Modular Sensor Integration
 
-The beauty of this system is that adding new sensors is straightforward. Want to add humidity? Just:
+The framework demonstrates **flexible sensor integration patterns**:
 
-1. Connect the sensor hardware
-2. Add a few lines to the configuration 
-3. The system automatically includes it in transmissions
+**Adding Humidity Sensor Example:**
 
-The framework is designed so you don't need to understand the low-level details to add new features.
+1. **Hardware Integration** - Connect sensor using standard I2C/SPI patterns
+2. **Driver Implementation** - Follow the provided sensor interface template  
+3. **Payload Extension** - Add sensor data after the header
+4. **Blueprint Update** - Extend the mioty blueprint with new component definitions
 
-## 📊 Understanding mioty Payload Format & Blueprints
+The modular approach ensures **easy expansion** - add new sensors without changing existing code.
 
-While the system handles most complexity automatically, understanding the payload structure helps when adding sensors or integrating with backend systems.
+## 📊 Payload Format & Blueprint Design Example
 
-### Current Payload Structure
+This section demonstrates **mioty blueprint creation** - showing how to define payload structures for base station integration. The blueprint is the key standard that defines how base stations decode device data.
 
-Every mioty transmission from this framework follows a standardized 10-byte format:
+### Example Payload Structure
+
+This example uses a 10-byte payload format to demonstrate mioty concepts:
 
 ```
 [8-byte Header][2-byte Temperature Data]
 ```
+
+**Note**: The 8-byte header shown here is **one suggested approach** for organizing payload data, not an industry standard. The **mioty blueprint definition is the actual standard** - manufacturers can structure their payloads in any way that works with the blueprint format.
 
 #### Complete Payload Breakdown
 
@@ -227,21 +268,21 @@ Every mioty transmission from this framework follows a standardized 10-byte form
 
 ```
 01 01 00 01 14 01 00 00 29 09
-└─────── Header ────────┘└─Temp─┘
+└─────── Header ──────┘└─Temp─┘
 ```
 
 Where temperature `23.45°C` becomes `2345` (scaled by 100) = `0x2909` in big-endian format.
 
-### mioty Blueprint for Current Firmware
+### mioty Blueprint Example
 
-Here's the complete blueprint that describes how to decode the entire 10-byte payload:
+This complete blueprint demonstrates how to define payload structures for mioty base stations:
 
 ```json
 {
   "version": "1.0",
   "typeEui": "70b3d56770000001",
   "meta": {
-    "name": "mioty Generic Node - Temperature Only",
+    "name": "mioty Example Node - Temperature Only",
     "vendor": "mioty Alliance",
     "description": "RP2040 + RFM69HW with internal temperature sensor"
   },
@@ -315,11 +356,80 @@ Here's the complete blueprint that describes how to decode the entire 10-byte pa
 }
 ```
 
-This blueprint tells the mioty base station exactly how to decode all 10 bytes of the payload, providing both header information and sensor data in a structured format.
+This blueprint shows the mioty base station exactly how to decode the payload and present the data in a structured format.
 
-### Future Payload Extensions
+### Version-Based Backward Compatibility Strategy
 
-The framework is designed to easily accommodate additional sensors. Here's how the payload would evolve:
+The key insight is that **each payload structure gets its own unique TypeEUI** in the mioty system. This allows base stations to support multiple device types simultaneously while maintaining clean separation between different payload formats.
+
+**The Process:**
+
+1. **Start with Version 1**: Temperature-only devices use `typeEui: "70b3d56770000001"`
+2. **Add sensors in Version 2**: Temperature + Humidity devices get `typeEui: "70b3d56770000002"`  
+3. **Continue evolution**: Each new sensor combination gets its own TypeEUI
+4. **Base station support**: The base station can decode all versions simultaneously
+
+#### Practical Example: Adding Humidity Sensor
+
+**Current Implementation (Version 1):**
+```cpp
+// In payload_config.hpp
+namespace CurrentConfig {
+    constexpr uint8_t PAYLOAD_VERSION = 1;
+    constexpr SensorConfig SENSOR_CONFIGS[] = {
+        {SensorType::INTERNAL_TEMPERATURE, 1, 100, 2}  // int16, x100 scaling
+    };
+}
+```
+
+**Blueprint:** `typeEui: "70b3d56770000001"` → 10 bytes total
+```
+[8-byte Header][2-byte Temperature] = 10 bytes
+```
+
+**Future Implementation (Version 2):**
+```cpp
+// In payload_config.hpp  
+namespace V2Config {
+    constexpr uint8_t PAYLOAD_VERSION = 2;
+    constexpr SensorConfig SENSOR_CONFIGS[] = {
+        {SensorType::INTERNAL_TEMPERATURE, 1, 100, 2},  // int16, x100 scaling
+        {SensorType::HUMIDITY, 2, 100, 2}               // uint16, x100 scaling
+    };
+}
+```
+
+**New Blueprint:** `typeEui: "70b3d56770000002"` → 12 bytes total
+```
+[8-byte Header][2-byte Temperature][2-byte Humidity] = 12 bytes
+```
+
+#### Base Station Configuration
+
+The base station supports both device types simultaneously:
+
+```json
+{
+  "supportedDevices": [
+    {
+      "typeEui": "70b3d56770000001",
+      "name": "Temperature Sensor v1",
+      "payloadLength": 10
+    },
+    {
+      "typeEui": "70b3d56770000002", 
+      "name": "Temperature + Humidity Sensor v2",
+      "payloadLength": 12
+    }
+  ]
+}
+```
+
+This approach ensures **reliable operation** while allowing your mioty network to evolve and grow with new capabilities.
+
+### Extending the Payload Structure
+
+The modular design makes it easy to add more sensors. Here's how the payload could evolve:
 
 #### Adding Humidity Sensor (Future)
 
@@ -340,14 +450,15 @@ When adding sensors:
 3. **New TypeEUI required** - each different payload structure needs its own unique identifier
 4. **Blueprint components expand** - new sensor types get added to the component definitions
 
-#### Key Design Principles
+#### Key Design Concepts
 
-- **Header stays constant** - The 8-byte header format never changes, ensuring compatibility
-- **Sensors append sequentially** - New sensor data is added after existing sensors
-- **Scaling preserved** - All sensors use consistent scaling (typically x100 for decimal precision)
-- **Big-endian format** - Multi-byte values use most significant byte first
+- **Flexible Header Design** - The header format can be adapted to your specific needs
+- **Sequential Sensor Data** - New sensor data is added after existing sensors
+- **Consistent Scaling** - Sensors use consistent scaling (e.g., x100 for decimal precision)
+- **Big-endian Format** - Multi-byte values use most significant byte first
+- **Blueprint Compatibility** - Any payload structure works as long as it's properly defined in the blueprint
 
-This approach ensures that as you add sensors to your project, the base station can properly decode and display all collected data while maintaining backward compatibility with the header structure.
+This approach ensures that as you add sensors to your project, the base station can properly decode and display all collected data.
 
 ## ⚙️ Customizing Your Node
 
@@ -381,54 +492,59 @@ payload_builder.addSensorData(SensorType::HUMIDITY, humidity_value);
 
 The system handles everything else automatically.
 
-## 🔧 Expanding Your Project
+## 🔧 Learning from the Example
 
-The framework is designed to grow with your needs. The structure is clean and modular, making it easy to add new features without breaking existing functionality.
+This example provides **modular patterns and concepts** you can adapt for your own mioty projects. Every component demonstrates clean architecture and replaceability.
 
-### Adding New Sensors
+### Sensor Integration Concepts
 
-Each sensor in the system has:
+The temperature sensor implementation demonstrates **flexible development approaches**:
 
-- A **driver** that talks to the hardware
-- **configuration** that defines how data is formatted  
-- **integration** into the main application loop
+- **Hardware Abstraction**: Clean separation between sensor interface and implementation
+- **Error Handling**: Proper validation and fallback strategies  
+- **Configuration Management**: Centralized settings for easy adaptation
+- **Data Formatting**: Consistent scaling and binary encoding
+- **Testing Support**: Built-in diagnostics and validation
 
-We provide examples and templates to help you add common sensors like:
+### Architecture Benefits for Real Projects
 
-- Humidity and pressure sensors (BME280, SHT30)
-- GPS modules for location tracking
-- Battery voltage monitoring
-- Light sensors and accelerometers
+The framework demonstrates patterns that **adapt to different needs**:
 
-### Power Management
+- **Modular Components**: Easy to replace, test, and extend independently
+- **Clear Interfaces**: Well-defined boundaries between system layers
+- **Configuration-Driven**: Adapt to different scenarios without code changes
+- **Documentation Focus**: Every design decision is explained for learning
+- **Flexibility Examples**: Reference implementation showing component replaceability
 
-Even though the RP2040 is not the most low-power chip on the market, it can be optimized for battery operation:
+Use this example as a **starting point for your own mioty projects** - the modular patterns demonstrated here make it easy to customize for your specific needs.
 
-- **Sleep modes** between transmissions to save power
-- **Efficient transmission** protocols to minimize radio usage
-- **Configurable intervals** - send data every few minutes or once per day
-- **Low power sensors** that don't drain your battery
+## 🚀 Building Your Own mioty Solutions
 
-### Creating Custom Hardware
+This end-point example provides the **foundation and modular concepts** for creating your own mioty-connected devices. The patterns demonstrated here enable projects like:
 
-The modular design makes it perfect for custom boards:
+**Environmental Monitoring:**
 
-- **Stack modules** on top of the Pico for clean installations  
-- **Custom breakout boards** for specific sensor combinations
-- **Enclosure-friendly** layouts for outdoor deployments
-- **Expansion headers** for adding more features later
+- Temperature, humidity, air quality sensors using the sensor framework patterns
+- Multi-sensor payloads following the extensible blueprint design
+- Battery-optimized transmission schedules for long-term deployments
 
-## 🚀 What's Next?
+**Asset & Location Tracking:**
 
-This project gives you everything needed to start building mioty-connected devices. Here are some ideas for what you could build:
+- GPS integration using the standardized sensor interface
+- Position data encoding following the binary payload patterns  
+- Low-power location reporting for vehicles, equipment, or livestock
 
-- **Environmental monitoring**: Temperature, humidity, air quality sensors
-- **Asset tracking**: GPS + mioty for tracking vehicles, equipment, or livestock  
-- **Smart agriculture**: Soil moisture, temperature, and light monitoring
-- **Building automation**: Room sensors, door/window status, occupancy detection
-- **Industrial monitoring**: Vibration, pressure, or equipment status sensors
+**Smart Agriculture & Industrial IoT:**
 
-The key advantage is **long range and low power** - your devices can operate for years on batteries while communicating over kilometers.
+- Soil sensors, equipment monitoring using the modular driver architecture
+- Custom payload structures following the blueprint concepts
+- Robust outdoor deployments using the demonstrated patterns
+
+**The mioty Advantage:**
+
+With this example as your starting point, you can build devices that operate **for years on batteries** while communicating over **kilometers of range** - perfect for IoT applications where traditional connectivity falls short.
+
+The key is leveraging the **modular patterns** demonstrated in this example: efficient payloads, proper blueprints, clean architecture, and component replaceability.
 
 ## 📄 License & Support
 
