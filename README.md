@@ -129,7 +129,7 @@ Connect your RFM69HW module to the Raspberry Pi Pico following this simple wirin
 
 Here's a visual representation of the complete setup:
 
-![mioty End-Point Example Wiring Diagram](docs/wiring-diagram.png)
+![mioty End-Point Example Wiring Diagram](img/routing.png)
 
 *The diagram shows the Raspberry Pi Pico connected to the RFM69HW radio module with the antenna, following the pin connections specified in the table above.*
 
