@@ -128,6 +128,12 @@ bool Application::initialize() {
         return false;
     }
     
+    // Initialize persistent storage for frame counter
+    if (!m_frame_counter_storage.initialize()) {
+        Logger::error("Persistent frame counter storage initialization failed");
+        return false;
+    }
+    
     // Print unique board ID
     pico_unique_board_id_t board_id;
     pico_get_unique_board_id(&board_id);
@@ -405,6 +411,12 @@ void Application::transmitData() {
     
     if (status == TSUNBStatus::OK) {
         Logger::info("✓ MIOTY transmission successful (packet #%u)", m_packet_counter);
+        
+        // Save the updated frame counter to persistent storage
+        uint32_t current_frame_counter = m_ts_unb_driver.getFrameCounter();
+        m_frame_counter_storage.writeFrameCounter(current_frame_counter);
+        Logger::debug("Frame counter saved to persistent storage: %u", current_frame_counter);
+        
         logDeviceIdentity();
         Logger::info("================================");
     } else {
@@ -459,8 +471,9 @@ TSUNBDriver::NodeConfig Application::createNodeConfigFromAppConfig(const uint8_t
         memcpy(config.short_addr, Config::Mioty::STATIC_SHORT_ADDR, 2);
     }
     
-    // Set initial extended packet counter
-    config.ext_pkg_cnt = Config::Mioty::INITIAL_EXT_PKG_CNT;
+    // Set initial extended packet counter from persistent storage
+    config.ext_pkg_cnt = m_frame_counter_storage.readFrameCounter();
+    Logger::info("Loaded frame counter from persistent storage: %u", config.ext_pkg_cnt);
     
     return config;
 }

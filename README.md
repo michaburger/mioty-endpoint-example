@@ -47,7 +47,8 @@ This project is designed as a **comprehensive example** that demonstrates mioty 
 - **📊 Efficient Data Transmission**: Binary payload format optimized for power and bandwidth
 - **🌡️ Extensible Sensor Framework**: Template showing how to add any sensor type
 - **🔧 Component Replaceability**: Every major component can be swapped for different hardware
-- **💰 Accessible Learning**: Sub-$10 BOM using widely available components
+- **� Persistent Frame Counter**: Flash-based storage ensures frame counter survives reboots for production reliability
+- **�💰 Accessible Learning**: Sub-$10 BOM using widely available components
 
 ## 📁 Modular Project Structure
 

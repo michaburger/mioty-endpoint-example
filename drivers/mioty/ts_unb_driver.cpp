@@ -362,3 +362,43 @@ void TSUNBDriver::configureActiveNode() {
     
     Logger::debug("TS-UNB node configured successfully");
 }
+
+uint32_t TSUNBDriver::getFrameCounter() const {
+    if (!m_initialized || !m_active_node) {
+        return 0;
+    }
+    
+    // Access the frame counter from the active node
+    if (m_config.region == Region::EU0) {
+        auto* node = static_cast<TsUnb_EU0_Rfm69w_t*>(m_active_node);
+        return node->Mac.extPkgCnt;
+    } else if (m_config.region == Region::EU1) {
+        auto* node = static_cast<TsUnb_EU1_Rfm69w_t*>(m_active_node);
+        return node->Mac.extPkgCnt;
+    } else if (m_config.region == Region::EU2) {
+        auto* node = static_cast<TsUnb_EU2_Rfm69w_t*>(m_active_node);
+        return node->Mac.extPkgCnt;
+    } else if (m_config.region == Region::US0) {
+        auto* node = static_cast<TsUnb_US0_Rfm69w_t*>(m_active_node);
+        return node->Mac.extPkgCnt;
+    }
+    
+    // Handle RFM69HW variants
+    if (m_config.chip_type == ChipType::RFM69HW) {
+        if (m_config.region == Region::EU0) {
+            auto* node = static_cast<TsUnb_EU0_Rfm69hw_t*>(m_active_node);
+            return node->Mac.extPkgCnt;
+        } else if (m_config.region == Region::EU1) {
+            auto* node = static_cast<TsUnb_EU1_Rfm69hw_t*>(m_active_node);
+            return node->Mac.extPkgCnt;
+        } else if (m_config.region == Region::EU2) {
+            auto* node = static_cast<TsUnb_EU2_Rfm69hw_t*>(m_active_node);
+            return node->Mac.extPkgCnt;
+        } else if (m_config.region == Region::US0) {
+            auto* node = static_cast<TsUnb_US0_Rfm69hw_t*>(m_active_node);
+            return node->Mac.extPkgCnt;
+        }
+    }
+    
+    return 0;
+}

@@ -218,6 +218,12 @@ public:
      */
     TSUNBStatus getLastError() const;
 
+    /**
+     * @brief Get current frame counter from MAC layer
+     * @return Current frame counter value
+     */
+    uint32_t getFrameCounter() const;
+
 private:
     bool m_initialized;
     NodeConfig m_config;

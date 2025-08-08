@@ -92,6 +92,7 @@ Modifications by mioty Alliance e.V. (2025)
 #include "../../drivers/sensors/temperature/rp2040_temp_sensor.hpp"
 #include "../../lib/utils/logger.hpp"
 #include "../../lib/utils/powerbank_keepalive.hpp"
+#include "../../lib/utils/persistent_storage.hpp"
 
 /**
  * @brief Sensor data structure
@@ -131,6 +132,7 @@ private:
     RP2040TempSensor m_temperature_sensor;
     PayloadConfig::PayloadBuilder m_payload_builder;
     PowerBankKeepAlive::KeepAliveManager m_powerbank_keepalive;
+    PersistentStorage::FrameCounterStorage m_frame_counter_storage;
     
     // Timing
     uint32_t m_last_sensor_reading_time;
