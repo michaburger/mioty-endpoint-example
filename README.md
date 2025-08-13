@@ -366,7 +366,7 @@ The key insight is that **each payload structure gets its own unique TypeEUI** i
 namespace CurrentConfig {
     constexpr uint8_t PAYLOAD_VERSION = 1;
     constexpr SensorConfig SENSOR_CONFIGS[] = {
-        {SensorType::INTERNAL_TEMPERATURE, 1, 100, 2}  // int16, x100 scaling
+        {SensorType::INTERNAL_TEMPERATURE, 1, 100, 2}  // int16, x100 scaling (big endian)
     };
 }
 ```

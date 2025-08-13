@@ -131,27 +131,27 @@ size_t PayloadBuilder::convertValueToBytes(float value, uint16_t multiplier, uin
             output[0] = static_cast<uint8_t>(fixed_point_value);
             return 1;
             
-        case 1: // int16 (little endian)
+        case 1: // int16 (big endian)
             if (fixed_point_value < -32768 || fixed_point_value > 32767) {
                 return 0; // Value out of range
             }
-            output[0] = fixed_point_value & 0xFF;
-            output[1] = (fixed_point_value >> 8) & 0xFF;
+            output[0] = (fixed_point_value >> 8) & 0xFF;
+            output[1] = fixed_point_value & 0xFF;
             return 2;
             
-        case 2: // uint16 (little endian)
+        case 2: // uint16 (big endian)
             if (fixed_point_value < 0 || fixed_point_value > 65535) {
                 return 0; // Value out of range
             }
-            output[0] = fixed_point_value & 0xFF;
-            output[1] = (fixed_point_value >> 8) & 0xFF;
+            output[0] = (fixed_point_value >> 8) & 0xFF;
+            output[1] = fixed_point_value & 0xFF;
             return 2;
             
-        case 3: // int32 (little endian)
-            output[0] = fixed_point_value & 0xFF;
-            output[1] = (fixed_point_value >> 8) & 0xFF;
-            output[2] = (fixed_point_value >> 16) & 0xFF;
-            output[3] = (fixed_point_value >> 24) & 0xFF;
+        case 3: // int32 (big endian)
+            output[0] = (fixed_point_value >> 24) & 0xFF;
+            output[1] = (fixed_point_value >> 16) & 0xFF;
+            output[2] = (fixed_point_value >> 8) & 0xFF;
+            output[3] = fixed_point_value & 0xFF;
             return 4;
             
         default:

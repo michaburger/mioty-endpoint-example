@@ -282,9 +282,13 @@ bool Application::initializeCommunication() {
                  config.eui64[0], config.eui64[1], config.eui64[2], config.eui64[3],
                  config.eui64[4], config.eui64[5], config.eui64[6], config.eui64[7]);
     Logger::info("Short Address: 0x%02X%02X", config.short_addr[0], config.short_addr[1]);
-    Logger::info("Network Key: %02x%02x%02x%02x...%02x%02x (first 4 and last 2 bytes)", 
-                 config.network_key[0], config.network_key[1], config.network_key[2], config.network_key[3],
-                 config.network_key[14], config.network_key[15]);
+    if (Config::ENABLE_NETWORK_KEY_DEBUG) {
+        Logger::info("Network Key: %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", 
+                     config.network_key[0], config.network_key[1], config.network_key[2], config.network_key[3],
+                     config.network_key[4], config.network_key[5], config.network_key[6], config.network_key[7],
+                     config.network_key[8], config.network_key[9], config.network_key[10], config.network_key[11],
+                     config.network_key[12], config.network_key[13], config.network_key[14], config.network_key[15]);
+    }
     Logger::info("=======================");
     
     // Initialize the TS-UNB driver
@@ -483,4 +487,11 @@ void Application::logDeviceIdentity() const {
                  m_device_eui64[0], m_device_eui64[1], m_device_eui64[2], m_device_eui64[3],
                  m_device_eui64[4], m_device_eui64[5], m_device_eui64[6], m_device_eui64[7],
                  m_device_short_addr[0], m_device_short_addr[1]);
+    if (Config::ENABLE_NETWORK_KEY_DEBUG) {
+        Logger::info("Network Key: %02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X%02X", 
+                     Config::Mioty::NETWORK_KEY[0], Config::Mioty::NETWORK_KEY[1], Config::Mioty::NETWORK_KEY[2], Config::Mioty::NETWORK_KEY[3],
+                     Config::Mioty::NETWORK_KEY[4], Config::Mioty::NETWORK_KEY[5], Config::Mioty::NETWORK_KEY[6], Config::Mioty::NETWORK_KEY[7],
+                     Config::Mioty::NETWORK_KEY[8], Config::Mioty::NETWORK_KEY[9], Config::Mioty::NETWORK_KEY[10], Config::Mioty::NETWORK_KEY[11],
+                     Config::Mioty::NETWORK_KEY[12], Config::Mioty::NETWORK_KEY[13], Config::Mioty::NETWORK_KEY[14], Config::Mioty::NETWORK_KEY[15]);
+    }
 }

@@ -30,6 +30,9 @@ namespace Config {
     constexpr uint32_t UART_BAUD_RATE = 115200;
     constexpr bool ENABLE_DEBUG_OUTPUT = true;
     
+    // Debug settings
+    constexpr bool ENABLE_NETWORK_KEY_DEBUG = false;  // Print network key in debug output (disable for production!)
+    
     // Sensor sampling rates (in milliseconds)
     constexpr uint32_t TEMPERATURE_SAMPLE_INTERVAL_MS = 20000;
     
@@ -39,7 +42,7 @@ namespace Config {
     // Positive values increase the reading, negative values decrease it
     // Example: If sensor reads 18.4°C but actual temperature is 25.7°C, 
     // set offset to 7.3°C to correct the reading
-    constexpr float TEMPERATURE_CALIBRATION_OFFSET_C = 7.3f;
+    constexpr float TEMPERATURE_CALIBRATION_OFFSET_C = 12.0f;
     
     // Mioty/TS-UNB settings
     constexpr bool ENABLE_MIOTY = true;
@@ -47,7 +50,7 @@ namespace Config {
     
     // Mioty/TS-UNB radio configuration
     namespace Mioty {
-        // Network and device identification
+        // Network and device identification: 2b7e151628aed2a6abf7158809cf4f3c
         constexpr uint8_t NETWORK_KEY[16] = {0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
                                            0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
         

@@ -53,8 +53,8 @@ var triggerTypeName = getTriggerTypeName(triggerType);
 var reserved1 = payloadBytes[6];
 var reserved2 = payloadBytes[7];
 
-// Parse temperature: 16-bit signed, little endian, divide by 100
-var tempRaw = payloadBytes[8] | (payloadBytes[9] << 8);
+// Parse temperature: 16-bit signed, big endian, divide by 100
+var tempRaw = (payloadBytes[8] << 8) | payloadBytes[9];
 // Handle signed 16-bit values
 if (tempRaw > 32767) {
     tempRaw = tempRaw - 65536;

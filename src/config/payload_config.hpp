@@ -78,14 +78,14 @@ namespace PayloadConfig {
         // Sensor configuration - defines which sensors to include and their format
         struct SensorConfig {
             SensorType type;
-            uint8_t data_format;    // 0=uint8, 1=int16, 2=uint16, 3=int32
+            uint8_t data_format;    // 0=uint8, 1=int16 (big endian), 2=uint16 (big endian), 3=int32 (big endian)
             uint16_t multiplier;    // For fixed-point representation
             uint8_t data_length;    // Bytes needed for this sensor
         };
         
         // Current sensor configuration array
         constexpr SensorConfig SENSOR_CONFIGS[] = {
-            // Internal temperature: int16 with 100x multiplier for 0.01°C precision
+            // Internal temperature: int16 with 100x multiplier for 0.01°C precision (big endian)
             {SensorType::INTERNAL_TEMPERATURE, 1, 100, 2},
             
             // Add more sensors here as needed:
