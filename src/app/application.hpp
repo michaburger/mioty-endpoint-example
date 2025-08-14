@@ -189,6 +189,11 @@ private:
     void updateBoardStatus();
     
     /**
+     * @brief Perform pre-transmission LED blinking sequence
+     */
+    void performTransmissionBlink();
+    
+    /**
      * @brief Create NodeConfig from centralized app configuration
      * @param board_id Unique 8-byte board identifier
      * @return Configured NodeConfig for TS-UNB driver

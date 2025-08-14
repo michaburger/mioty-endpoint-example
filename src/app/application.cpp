@@ -368,6 +368,9 @@ void Application::transmitData() {
         return;
     }
     
+    // Perform LED blinking sequence to indicate transmission
+    performTransmissionBlink();
+    
     // Log transmission timing for debugging
     uint32_t current_time = to_ms_since_boot(get_absolute_time());
     uint32_t time_since_last = current_time - m_last_transmission_time;
@@ -443,19 +446,24 @@ void Application::transmitData() {
         // Don't increment packet counter on failure
         --m_packet_counter;
     }
+    
+    // Ensure LED is turned off after transmission
+    m_board_config.setStatusLED(false);
 }
 
 void Application::updateBoardStatus() {
-    // Blink status LED to show the system is alive
-    static uint32_t last_blink_time = 0;
-    static bool led_state = false;
-    
-    uint32_t current_time = to_ms_since_boot(get_absolute_time());
-    
-    if ((current_time - last_blink_time) >= Config::LED_BLINK_DELAY_MS) {
-        led_state = !led_state;
-        m_board_config.setStatusLED(led_state);
-        last_blink_time = current_time;
+    // Status LED is now only used for transmission indication
+    // No continuous blinking to save power and reduce visual distraction
+}
+
+void Application::performTransmissionBlink() {
+    // Blink LED sequence to indicate upcoming transmission
+    // Quick triple blink pattern: on-off-on-off-on-off
+    for (int i = 0; i < 3; i++) {
+        m_board_config.setStatusLED(true);
+        sleep_ms(100);
+        m_board_config.setStatusLED(false);
+        sleep_ms(100);
     }
 }
 

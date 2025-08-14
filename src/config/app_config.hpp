@@ -46,7 +46,7 @@ namespace Config {
     
     // Mioty/TS-UNB settings
     constexpr bool ENABLE_MIOTY = true;
-    constexpr uint32_t MIOTY_TRANSMISSION_INTERVAL_MS = 60000; // 60 seconds
+    constexpr uint32_t MIOTY_TRANSMISSION_INTERVAL_MS = 300000; // 5 minutes
     
     // Mioty/TS-UNB radio configuration
     namespace Mioty {
