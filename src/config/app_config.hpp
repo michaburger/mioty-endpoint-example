@@ -42,7 +42,7 @@ namespace Config {
     // Positive values increase the reading, negative values decrease it
     // Example: If sensor reads 18.4°C but actual temperature is 25.7°C, 
     // set offset to 7.3°C to correct the reading
-    constexpr float TEMPERATURE_CALIBRATION_OFFSET_C = 12.0f;
+    constexpr float TEMPERATURE_CALIBRATION_OFFSET_C = 7.3f;
     
     // Mioty/TS-UNB settings
     constexpr bool ENABLE_MIOTY = true;
