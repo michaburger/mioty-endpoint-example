@@ -193,6 +193,19 @@ void Application::run() {
     Logger::info("Starting main application loop");
     m_is_running = true;
     
+    // Startup sequence: Read sensors first, then transmit immediately
+    Logger::info("=== STARTUP SEQUENCE ===");
+    Logger::info("Reading sensors at startup...");
+    readSensors();
+    m_last_sensor_reading_time = to_ms_since_boot(get_absolute_time());
+    
+    Logger::info("Performing initial transmission...");
+    transmitData();
+    m_last_transmission_time = to_ms_since_boot(get_absolute_time());
+    
+    Logger::info("Starting periodic operation with %u ms transmission interval", 
+                 Config::MIOTY_TRANSMISSION_INTERVAL_MS);
+    
     uint32_t loop_counter = 0;
     
     while (m_is_running) {
