@@ -1,10 +1,10 @@
-// Decode an uplink message from a buffer
-// payload - array of bytes (from the hex data field)
-// metadata - key/value object with EUI, fcnt, gws, etc.
+// MIOTY Endpoint Example Decoder for ThingsBoard Platform
+// 
+// This decoder is specifically designed for use on the ThingsBoard IoT platform
+// to parse MIOTY protocol messages from Loriot network server integration.
+//
 
-/** Decoder **/
-
-function Decoder(payload, metadata) {
+/** Helper Functions **/
 
 function hexStringToBytes(hex) {
     var bytes = [];
@@ -13,6 +13,24 @@ function hexStringToBytes(hex) {
     }
     return bytes;
 }
+
+function tryParseJsonFromBytes(payload) {
+    // Try to detect if this is JSON by attempting to parse it as a string
+    if (Array.isArray(payload) && payload.length > 10 && 
+        payload[0] === 123 && payload[payload.length - 1] === 125) {
+        try {
+            var jsonString = String.fromCharCode.apply(String, payload);
+            return JSON.parse(jsonString);
+        } catch (e) {
+            return null;
+        }
+    }
+    return null;
+}
+
+/** Decoder **/
+
+function Decoder(payload, metadata) {
 
 function getTriggerTypeName(triggerType) {
     var triggerTypes = {
@@ -32,30 +50,16 @@ function getTriggerTypeName(triggerType) {
 var payloadBytes;
 var actualMetadata = metadata;
 
-// Check if payload is actually JSON as byte array (safer detection)
+// Check if payload is actually JSON as byte array
 if (Array.isArray(payload)) {
-    // Try to detect if this is JSON by attempting to parse it as a string
-    var isJsonPayload = false;
-    try {
-        // Only attempt JSON parsing if it starts with '{' and ends with '}'
-        if (payload.length > 10 && payload[0] === 123 && payload[payload.length - 1] === 125) {
-            var jsonString = String.fromCharCode.apply(String, payload);
-            var parsedJson = JSON.parse(jsonString);
-            // Verify it has the expected structure of a MIOTY message
-            if (parsedJson.data && typeof parsedJson.data === 'string' && 
-                parsedJson.protocol === 'mioty' && parsedJson.cmd === 'gw') {
-                payloadBytes = hexStringToBytes(parsedJson.data);
-                actualMetadata = parsedJson;
-                isJsonPayload = true;
-            }
-        }
-    } catch (e) {
-        // Not JSON, continue with normal processing
-        isJsonPayload = false;
-    }
-    
-    // If not JSON payload, treat as direct byte array
-    if (!isJsonPayload) {
+    var parsedJson = tryParseJsonFromBytes(payload);
+    if (parsedJson && parsedJson.data && typeof parsedJson.data === 'string' && 
+        parsedJson.protocol === 'mioty' && parsedJson.cmd === 'gw') {
+        // Valid MIOTY JSON payload
+        payloadBytes = hexStringToBytes(parsedJson.data);
+        actualMetadata = parsedJson;
+    } else {
+        // Direct byte array payload
         payloadBytes = payload;
     }
 } else if (typeof payload === 'string') {
@@ -115,7 +119,13 @@ var fcnt = (actualMetadata && actualMetadata.fcnt) || 0;
 
 // Device identification - extract EUI properly
 var deviceEUI = (actualMetadata && (actualMetadata.EUI || actualMetadata.eui)) || 'unknown';
-var deviceName = 'mioty-node-' + (deviceEUI !== 'unknown' ? deviceEUI.slice(-4) : 'unknown');
+
+// Only process data if EUI is known - reject unknown devices
+if (deviceEUI === 'unknown') {
+    throw new Error("Device EUI is unknown - data routing rejected");
+}
+
+var deviceName = 'mioty-node-' + deviceEUI.slice(-4);
 var deviceType = 'mioty-example-node-temperature';
 var groupName = 'Example nodes';
 var manufacturer = 'mioty Alliance';
@@ -173,7 +183,18 @@ return result;
 
 }
 
-// For testing purposes, if called directly
-if (typeof payload !== 'undefined' && typeof metadata !== 'undefined') {
-    return Decoder(payload, metadata);
+// Main execution with message filtering for ThingsBoard
+// Loriot sends duplicate messages: "rx" and "gw" commands
+// We only process "gw" messages to avoid duplicates and get gateway information
+
+// Extract cmd field to filter messages
+var messageCmd = null;
+var parsedJson = tryParseJsonFromBytes(payload);
+if (parsedJson) {
+    messageCmd = parsedJson.cmd;
+} else {
+    // Use metadata cmd if available
+    messageCmd = metadata && metadata.cmd;
 }
+
+return Decoder(payload, metadata);

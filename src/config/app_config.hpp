@@ -46,8 +46,8 @@ namespace Config {
     
     // Mioty/TS-UNB settings
     constexpr bool ENABLE_MIOTY = true;
-    constexpr uint32_t MIOTY_TRANSMISSION_INTERVAL_MS = 300000; // 5 minutes
-    
+    constexpr uint32_t MIOTY_TRANSMISSION_INTERVAL_MS = 30000; // 30 seconds
+
     // Mioty/TS-UNB radio configuration
     namespace Mioty {
         // Network and device identification: 2b7e151628aed2a6abf7158809cf4f3c
@@ -94,9 +94,9 @@ namespace Config {
     // Dummy load configuration (when POWER_FROM_POWERBANK is true)
     namespace PowerBankKeepAlive {
         // Pulse load timing
-        constexpr uint32_t PULSE_INTERVAL_MS = 5000;      // Pulse every 5 seconds
-        constexpr uint32_t PULSE_DURATION_MS = 150;       // Pulse for 150ms
-        
+        constexpr uint32_t PULSE_INTERVAL_MS = 3000;      // Pulse every 3 seconds
+        constexpr uint32_t PULSE_DURATION_MS = 300;       // Pulse for 300ms
+
         // Load current configuration
         constexpr bool USE_EXTERNAL_RESISTOR = true;       // Use external resistor for higher current
         
