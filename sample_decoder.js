@@ -1,8 +1,10 @@
 // Decode an uplink message from a buffer
-// payload - array of bytes
-// metadata - key/value object
+// payload - array of bytes (from the hex data field)
+// metadata - key/value object with EUI, fcnt, gws, etc.
 
 /** Decoder **/
+
+function Decoder(payload, metadata) {
 
 function hexStringToBytes(hex) {
     var bytes = [];
@@ -26,62 +28,102 @@ function getTriggerTypeName(triggerType) {
     return triggerTypes[triggerType] || "UNKNOWN";
 }
 
-// Handle payload format - convert hex string to bytes if needed
+// Handle different payload formats more defensively
 var payloadBytes;
-if (typeof payload === 'string') {
-    // Hex string payload
+var actualMetadata = metadata;
+
+// Check if payload is actually JSON as byte array (safer detection)
+if (Array.isArray(payload)) {
+    // Try to detect if this is JSON by attempting to parse it as a string
+    var isJsonPayload = false;
+    try {
+        // Only attempt JSON parsing if it starts with '{' and ends with '}'
+        if (payload.length > 10 && payload[0] === 123 && payload[payload.length - 1] === 125) {
+            var jsonString = String.fromCharCode.apply(String, payload);
+            var parsedJson = JSON.parse(jsonString);
+            // Verify it has the expected structure of a MIOTY message
+            if (parsedJson.data && typeof parsedJson.data === 'string' && 
+                parsedJson.protocol === 'mioty' && parsedJson.cmd === 'gw') {
+                payloadBytes = hexStringToBytes(parsedJson.data);
+                actualMetadata = parsedJson;
+                isJsonPayload = true;
+            }
+        }
+    } catch (e) {
+        // Not JSON, continue with normal processing
+        isJsonPayload = false;
+    }
+    
+    // If not JSON payload, treat as direct byte array
+    if (!isJsonPayload) {
+        payloadBytes = payload;
+    }
+} else if (typeof payload === 'string') {
+    // Hex string payload (fallback)
     payloadBytes = hexStringToBytes(payload);
-} else if (Array.isArray(payload)) {
-    // Byte array payload
-    payloadBytes = payload;
+} else if (payload && payload.data && typeof payload.data === 'string') {
+    // Sometimes the whole object comes as payload
+    payloadBytes = hexStringToBytes(payload.data);
+    actualMetadata = payload;
+} else if (metadata && metadata.data && typeof metadata.data === 'string') {
+    // Or the hex data is in metadata
+    payloadBytes = hexStringToBytes(metadata.data);
 } else {
-    throw new Error("Unsupported payload format");
+    // Last resort: if we have a payload object, try to find the data
+    var dataField = (payload && (payload.data || payload.payload)) || 
+                   (metadata && (metadata.data || metadata.payload));
+    if (typeof dataField === 'string') {
+        payloadBytes = hexStringToBytes(dataField);
+    } else if (Array.isArray(dataField)) {
+        payloadBytes = dataField;
+    } else {
+        throw new Error("Cannot find valid payload data");
+    }
 }
 
 if (payloadBytes.length < 10) {
-    throw new Error("Payload too short. Expected 10 bytes, got " + payloadBytes.length);
+    throw new Error("Payload too short. Expected at least 10 bytes, got " + payloadBytes.length);
 }
 
-// Extract payload header values
+// Extract payload header values (8 bytes header according to PayloadConfig::PayloadHeader)
 var payloadVersion = payloadBytes[0];
 var firmwareMajor = payloadBytes[1];
 var firmwareMinor = payloadBytes[2];
 var hardwareVersion = payloadBytes[3];
-var txPowerDbm = (payloadBytes[4] << 24) >> 24; // signed 8-bit
+var txPowerDbm = payloadBytes[4]; // unsigned 8-bit
 var triggerType = payloadBytes[5];
 var triggerTypeName = getTriggerTypeName(triggerType);
 var reserved1 = payloadBytes[6];
 var reserved2 = payloadBytes[7];
 
-// Parse temperature: 16-bit signed, big endian, divide by 100
+// Parse sensor data starting from byte 8
+// Internal temperature: int16 big endian with 100x multiplier (0.01°C precision)
 var tempRaw = (payloadBytes[8] << 8) | payloadBytes[9];
-// Handle signed 16-bit values
+// Handle signed 16-bit values (int16)
 if (tempRaw > 32767) {
     tempRaw = tempRaw - 65536;
 }
 var temperature = tempRaw / 100.0;
 
-// Extract gateway information (RSSI/SNR from first gateway or top level)
-var gatewayInfo = metadata.gws && metadata.gws.length > 0 ? metadata.gws[0] : {};
-var rssi = metadata.rssi || gatewayInfo.rssi || null;
-var snr = metadata.snr || gatewayInfo.snr || null;
+// Extract gateway information (RSSI/SNR from first gateway)
+var gatewayInfo = actualMetadata && actualMetadata.gws && actualMetadata.gws.length > 0 ? actualMetadata.gws[0] : {};
+var rssi = gatewayInfo.rssi || null;
+var snr = gatewayInfo.snr || null;
 
-// Extract frame counter - check multiple possible locations including Cyrillic 'С'
-var fcnt = metadata.fcnt || metadata.fCnt || metadata['fСnt'] || metadata.frameCounter || metadata.frame_counter || 0;
+// Extract frame counter
+var fcnt = (actualMetadata && actualMetadata.fcnt) || 0;
 
-// Device identification
-var deviceEUI = metadata.EUI || metadata.eui || 'unknown';
+// Device identification - extract EUI properly
+var deviceEUI = (actualMetadata && (actualMetadata.EUI || actualMetadata.eui)) || 'unknown';
 var deviceName = 'mioty-node-' + (deviceEUI !== 'unknown' ? deviceEUI.slice(-4) : 'unknown');
-var deviceType = 'mioty-temperature-sensor';
-var customerName = 'MyCustomer';
-var groupName = 'Temperature Nodes';
+var deviceType = 'mioty-example-node-temperature';
+var groupName = 'Example nodes';
 var manufacturer = 'mioty Alliance';
 
 // Result object with device attributes/telemetry data
 var result = {
     deviceName: deviceName,
     deviceType: deviceType,
-    customerName: customerName,
     groupName: groupName,
     attributes: {
         payload_version: payloadVersion,
@@ -95,12 +137,12 @@ var result = {
         reserved2: reserved2,
         device_eui: deviceEUI,
         fcnt: fcnt,
-        sequence_number: metadata.seqno,
+        sequence_number: actualMetadata && actualMetadata.seqno,
         rssi: rssi,
         snr: snr,
-        protocol: metadata.protocol || 'mioty',
-        message_type: metadata.cmd || 'rx',
-        integrationName: metadata['integrationName'],
+        protocol: (actualMetadata && actualMetadata.protocol) || 'mioty',
+        message_type: (actualMetadata && actualMetadata.cmd) || 'rx',
+        integrationName: actualMetadata && actualMetadata['integrationName'],
         manufacturer: manufacturer
     },
     telemetry: {
@@ -108,7 +150,7 @@ var result = {
         rssi: rssi,
         snr: snr,
         fcnt: fcnt,
-        ts: metadata.ts || Date.now()
+        ts: (actualMetadata && actualMetadata.ts) || Date.now()
     }
 };
 
@@ -128,3 +170,10 @@ function decodeToJson(payload) {
 }
 
 return result;
+
+}
+
+// For testing purposes, if called directly
+if (typeof payload !== 'undefined' && typeof metadata !== 'undefined') {
+    return Decoder(payload, metadata);
+}
